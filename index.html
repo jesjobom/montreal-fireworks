@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Montreal Fireworks</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reset.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/night.css" id="theme" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-background-gradient="linear-gradient(135deg, #0f172a, #312e81, #7c2d12)">
+          <h1>Montreal Fireworks</h1>
+          <p>Reveal.js slideshow running as a static GitHub Pages site.</p>
+          <p><small>Arrow keys navigate, hash URLs are enabled.</small></p>
+        </section>
+
+        <section>
+          <h2>Fragments demo</h2>
+          <ul>
+            <li class="fragment">Step-by-step bullet reveal</li>
+            <li class="fragment">Good for pacing a talk</li>
+            <li class="fragment">Zero backend, just static files</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Visual demo</h2>
+          <div class="demo-stage">
+            <div class="burst burst-a"></div>
+            <div class="burst burst-b fragment"></div>
+            <div class="burst burst-c fragment"></div>
+          </div>
+          <p><small>Auto-animate plus fragments, because plain slides are a bit sad.</small></p>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide',
+        backgroundTransition: 'fade'
+      });
+    </script>
+  </body>
+</html>

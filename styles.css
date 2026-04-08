@@ -1,0 +1,77 @@
+:root {
+  --accent: #f59e0b;
+  --accent-2: #ef4444;
+}
+
+.reveal h1,
+.reveal h2 {
+  text-transform: none;
+}
+
+.reveal small {
+  opacity: 0.8;
+}
+
+.demo-stage {
+  position: relative;
+  width: 720px;
+  height: 320px;
+  margin: 2rem auto;
+  border-radius: 24px;
+  overflow: hidden;
+  background: radial-gradient(circle at top, rgba(99, 102, 241, 0.35), transparent 30%),
+    linear-gradient(180deg, #0f172a, #111827 70%, #020617);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.demo-stage::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 24%;
+  background: linear-gradient(90deg, #020617 0 8%, #111827 8% 15%, #1f2937 15% 22%, #111827 22% 29%, #0f172a 29% 37%, #1e293b 37% 44%, #111827 44% 52%, #0f172a 52% 61%, #1f2937 61% 68%, #111827 68% 76%, #0f172a 76% 84%, #1e293b 84% 100%);
+}
+
+.burst {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  border-radius: 999px;
+}
+
+.burst::before,
+.burst::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: 4px;
+  height: 110px;
+  transform-origin: center top;
+}
+
+.burst::before {
+  background: linear-gradient(var(--accent), transparent 70%);
+  transform: rotate(0deg);
+}
+
+.burst::after {
+  background: linear-gradient(var(--accent-2), transparent 70%);
+  transform: rotate(90deg);
+}
+
+.burst-a {
+  top: 18%;
+  left: 18%;
+}
+
+.burst-b {
+  top: 10%;
+  left: 46%;
+}
+
+.burst-c {
+  top: 22%;
+  left: 70%;
+}
