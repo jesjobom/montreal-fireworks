@@ -48,12 +48,16 @@ function initializePresentation() {
   if (qrContainer) {
     qrContainer.replaceChildren();
     try {
-      new QRCode(qrContainer, remoteUrl);
-      const image = qrContainer.querySelector('img, canvas');
-      if (image) {
-        image.width = 200;
-        image.height = 200;
-      }
+      const canvas = document.createElement('canvas');
+      qrContainer.appendChild(canvas);
+      new QRious({
+        element: canvas,
+        value: remoteUrl,
+        size: 200,
+        foreground: '#111827',
+        background: '#ffffff',
+        level: 'M'
+      });
     } catch (error) {
       qrContainer.textContent = 'QR generation failed';
       console.error(error);
