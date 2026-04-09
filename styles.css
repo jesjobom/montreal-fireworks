@@ -18,6 +18,20 @@ body {
   font-family: Inter, system-ui, sans-serif;
 }
 
+.hero-title {
+  display: inline-block;
+  padding: 1.25rem 1.75rem;
+  border-radius: 20px;
+  background: rgba(2, 6, 23, 0.48);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.hero-title h1 {
+  margin: 0;
+  color: #ffffff;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+}
+
 .reveal h1,
 .reveal h2 {
   text-transform: none;
