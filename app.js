@@ -28,6 +28,40 @@ function updateStatus(text, state) {
   element.dataset.state = state || '';
 }
 
+function showToast(message) {
+  const toast = document.getElementById('remote-toast');
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.classList.add('is-visible');
+
+  window.clearTimeout(showToast.timeoutId);
+  showToast.timeoutId = window.setTimeout(() => {
+    toast.classList.remove('is-visible');
+  }, 2600);
+}
+
+function setOverlayCollapsed(collapsed) {
+  const overlay = document.getElementById('remote-overlay');
+  const toggle = document.getElementById('remote-toggle');
+  if (!overlay || !toggle) return;
+
+  overlay.classList.toggle('is-collapsed', collapsed);
+  toggle.setAttribute('aria-expanded', String(!collapsed));
+}
+
+function publishCommand(channel, payload, feedbackElement, eventName = 'command') {
+  if (!channel) {
+    if (feedbackElement) feedbackElement.textContent = 'Remote channel is unavailable.';
+    return;
+  }
+
+  channel.publish(eventName, payload, (error) => {
+    if (!feedbackElement) return;
+    feedbackElement.textContent = error ? `Send failed: ${error.message || error}` : `Sent: ${payload.action}`;
+  });
+}
+
 function initializePresentation() {
   const deck = new Reveal({
     hash: true,
@@ -43,6 +77,16 @@ function initializePresentation() {
   document.getElementById('session-id').textContent = sessionId;
   document.getElementById('remote-link').href = remoteUrl;
   document.getElementById('remote-link').textContent = remoteUrl;
+
+  document.getElementById('remote-toggle')?.addEventListener('click', () => {
+    const overlay = document.getElementById('remote-overlay');
+    const collapsed = overlay ? overlay.classList.contains('is-collapsed') : true;
+    setOverlayCollapsed(!collapsed);
+  });
+
+  document.getElementById('remote-close')?.addEventListener('click', () => {
+    setOverlayCollapsed(true);
+  });
 
   const qrContainer = document.getElementById('remote-qr');
   if (qrContainer) {
@@ -79,6 +123,15 @@ function initializePresentation() {
   client.connection.on('suspended', () => updateStatus('suspended', 'warn'));
   client.connection.on('failed', () => updateStatus('failed or token expired', 'error'));
 
+  channel.subscribe('presence', (message) => {
+    const data = (message && message.data) || {};
+
+    if (data.action === 'remote-connected') {
+      setOverlayCollapsed(true);
+      showToast('Remote connected');
+    }
+  });
+
   channel.subscribe('command', (message) => {
     const data = (message && message.data) || {};
 
@@ -97,18 +150,6 @@ function initializePresentation() {
       default:
         console.warn('Unknown remote action', data);
     }
-  });
-}
-
-function publishCommand(channel, payload, feedbackElement) {
-  if (!channel) {
-    if (feedbackElement) feedbackElement.textContent = 'Remote channel is unavailable.';
-    return;
-  }
-
-  channel.publish('command', payload, (error) => {
-    if (!feedbackElement) return;
-    feedbackElement.textContent = error ? `Send failed: ${error.message || error}` : `Sent: ${payload.action}`;
   });
 }
 
@@ -139,6 +180,7 @@ function initializeRemote() {
 
     client.connection.on('connected', () => {
       if (feedback) feedback.textContent = 'Connected. Ready to send commands.';
+      publishCommand(channel, { action: 'remote-connected', connectedAt: new Date().toISOString() }, null, 'presence');
     });
 
     client.connection.on('failed', () => {

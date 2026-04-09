@@ -42,6 +42,38 @@ small {
   top: 1rem;
   right: 1rem;
   z-index: 20;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.remote-toggle,
+.remote-close {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+}
+
+.remote-toggle {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  font-size: 1.35rem;
+}
+
+.remote-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  font-size: 1rem;
+}
+
+.remote-overlay.is-collapsed .remote-card {
+  display: none;
 }
 
 .remote-card,
@@ -53,6 +85,13 @@ small {
   background: var(--panel);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(12px);
+}
+
+.remote-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .remote-card h2,
@@ -95,6 +134,28 @@ small {
 
 .status-line span[data-state='error'] {
   color: var(--error);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%) translateY(16px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 25;
+  padding: 0.9rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.94);
+  color: white;
+  border: 1px solid var(--line);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .demo-stage {
@@ -231,12 +292,12 @@ input {
 
 @media (max-width: 900px) {
   .remote-overlay {
-    position: static;
-    padding: 1rem;
+    top: 0.75rem;
+    right: 0.75rem;
   }
 
   .remote-card {
-    width: auto;
+    width: min(340px, calc(100vw - 5rem));
   }
 
   .demo-stage {

@@ -10,10 +10,18 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="presentation-page">
-    <div class="remote-overlay" id="remote-overlay">
-      <div class="remote-card">
-        <p class="eyebrow">Remote control</p>
-        <h2>Scan to control the slides</h2>
+    <div class="remote-overlay is-collapsed" id="remote-overlay">
+      <button class="remote-toggle" id="remote-toggle" type="button" aria-expanded="false" aria-controls="remote-card" title="Open remote control panel">
+        🎛️
+      </button>
+      <div class="remote-card" id="remote-card">
+        <div class="remote-card-header">
+          <div>
+            <p class="eyebrow">Remote control</p>
+            <h2>Scan to control the slides</h2>
+          </div>
+          <button class="remote-close" id="remote-close" type="button" aria-label="Minimize remote control panel">✕</button>
+        </div>
         <div class="qr-shell">
           <div id="remote-qr" aria-label="QR code for remote control"></div>
         </div>
@@ -23,6 +31,8 @@
         <p><small>These tokens are temporary test credentials. When they expire, remote control stops working. Very glamorous.</small></p>
       </div>
     </div>
+
+    <div class="toast" id="remote-toast" aria-live="polite"></div>
 
     <div class="reveal">
       <div class="slides">
