@@ -48,16 +48,22 @@ function initializePresentation() {
   if (qrContainer) {
     qrContainer.replaceChildren();
     try {
-      new QRCode(qrContainer, {
-        text: remoteUrl,
-        width: 200,
-        height: 200,
-        correctLevel: QRCode.CorrectLevel.M
-      });
+      new QRCode(qrContainer, remoteUrl);
+      const image = qrContainer.querySelector('img, canvas');
+      if (image) {
+        image.width = 200;
+        image.height = 200;
+      }
     } catch (error) {
       qrContainer.textContent = 'QR generation failed';
       console.error(error);
     }
+  }
+
+  updateStatus('token expired, waiting for fresh test tokens', 'error');
+
+  if (!PRESENTATION_TOKEN) {
+    return;
   }
 
   const client = new Ably.Realtime({ token: PRESENTATION_TOKEN });
@@ -70,7 +76,7 @@ function initializePresentation() {
   client.connection.on('failed', () => updateStatus('failed or token expired', 'error'));
 
   channel.subscribe('command', (message) => {
-    const data = message.data || {};
+    const data = (message && message.data) || {};
 
     switch (data.action) {
       case 'next':
@@ -91,6 +97,11 @@ function initializePresentation() {
 }
 
 function publishCommand(channel, payload, feedbackElement) {
+  if (!channel) {
+    if (feedbackElement) feedbackElement.textContent = 'Remote channel is unavailable.';
+    return;
+  }
+
   channel.publish('command', payload, (error) => {
     if (!feedbackElement) return;
     feedbackElement.textContent = error ? `Send failed: ${error.message || error}` : `Sent: ${payload.action}`;
@@ -111,16 +122,29 @@ function initializeRemote() {
 
   if (sessionEl) sessionEl.textContent = sessionId;
 
-  const client = new Ably.Realtime({ token: REMOTE_TOKEN });
-  const channel = client.channels.get(`${CHANNEL_PREFIX}${sessionId}`);
+  if (!REMOTE_TOKEN) {
+    if (feedback) feedback.textContent = 'Remote token missing or expired.';
+    return;
+  }
 
-  client.connection.on('connected', () => {
-    if (feedback) feedback.textContent = 'Connected. Ready to send commands.';
-  });
+  let channel = null;
 
-  client.connection.on('failed', () => {
-    if (feedback) feedback.textContent = 'Connection failed or token expired.';
-  });
+  try {
+    const client = new Ably.Realtime({ token: REMOTE_TOKEN });
+    channel = client.channels.get(`${CHANNEL_PREFIX}${sessionId}`);
+
+    client.connection.on('connected', () => {
+      if (feedback) feedback.textContent = 'Connected. Ready to send commands.';
+    });
+
+    client.connection.on('failed', () => {
+      if (feedback) feedback.textContent = 'Connection failed or token expired.';
+    });
+  } catch (error) {
+    if (feedback) feedback.textContent = 'Ably initialization failed.';
+    console.error(error);
+    return;
+  }
 
   document.getElementById('btn-next')?.addEventListener('click', () => {
     publishCommand(channel, { action: 'next' }, feedback);
