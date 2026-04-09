@@ -2,6 +2,8 @@
 
 Static Reveal.js presentation prepared for GitHub Pages.
 
+GitHub Pages URL: https://jesjobom.github.io/montreal-fireworks/
+
 ## Files
 
 - `index.html` - presentation
