@@ -1,6 +1,21 @@
 :root {
   --accent: #f59e0b;
   --accent-2: #ef4444;
+  --bg-deep: #020617;
+  --bg-soft: #111827;
+  --panel: rgba(15, 23, 42, 0.92);
+  --line: rgba(255, 255, 255, 0.12);
+  --text-soft: rgba(255, 255, 255, 0.75);
+  --ok: #22c55e;
+  --warn: #f59e0b;
+  --error: #ef4444;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-deep);
+  color: white;
+  font-family: Inter, system-ui, sans-serif;
 }
 
 .reveal h1,
@@ -8,8 +23,78 @@
   text-transform: none;
 }
 
-.reveal small {
+.reveal small,
+small {
   opacity: 0.8;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.remote-overlay {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 20;
+}
+
+.remote-card,
+.remote-panel {
+  width: min(360px, calc(100vw - 2rem));
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--panel);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+}
+
+.remote-card h2,
+.remote-panel h1 {
+  margin-top: 0;
+}
+
+.qr-shell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px;
+  margin: 1rem 0;
+  padding: 0.75rem;
+  border-radius: 16px;
+  background: white;
+}
+
+.qr-shell canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+.session-line,
+.link-line,
+.status-line,
+.remote-feedback {
+  margin: 0.6rem 0;
+  color: var(--text-soft);
+  word-break: break-word;
+}
+
+.status-line span[data-state='ok'] {
+  color: var(--ok);
+}
+
+.status-line span[data-state='warn'] {
+  color: var(--warn);
+}
+
+.status-line span[data-state='error'] {
+  color: var(--error);
 }
 
 .demo-stage {
@@ -74,4 +159,88 @@
 .burst-c {
   top: 22%;
   left: 70%;
+}
+
+.remote-layout {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: radial-gradient(circle at top, rgba(99, 102, 241, 0.25), transparent 30%),
+    linear-gradient(180deg, #0f172a, #020617);
+}
+
+.remote-actions,
+.goto-panel {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.remote-actions {
+  grid-template-columns: 1fr 1fr;
+  margin: 1rem 0;
+}
+
+.goto-panel {
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+}
+
+.goto-panel button {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.85rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  font-size: 1rem;
+}
+
+.remote-button {
+  appearance: none;
+  border: 0;
+  border-radius: 14px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.remote-button.primary {
+  background: linear-gradient(135deg, var(--accent), #fb923c);
+  color: #111827;
+}
+
+.remote-button.secondary,
+.remote-button.tertiary {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+@media (max-width: 900px) {
+  .remote-overlay {
+    position: static;
+    padding: 1rem;
+  }
+
+  .remote-card {
+    width: auto;
+  }
+
+  .demo-stage {
+    width: min(100%, 640px);
+    height: 280px;
+  }
 }

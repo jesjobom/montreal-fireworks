@@ -9,7 +9,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/night.css" id="theme" />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="presentation-page">
+    <div class="remote-overlay" id="remote-overlay">
+      <div class="remote-card">
+        <p class="eyebrow">Remote control</p>
+        <h2>Scan to control the slides</h2>
+        <div class="qr-shell">
+          <div id="remote-qr" aria-label="QR code for remote control"></div>
+        </div>
+        <p class="session-line">Session: <code id="session-id">...</code></p>
+        <p class="link-line"><a id="remote-link" href="#" target="_blank" rel="noopener noreferrer">Open remote control</a></p>
+        <p class="status-line">Ably status: <span id="ably-status">connecting...</span></p>
+        <p><small>These tokens are temporary test credentials. When they expire, remote control stops working. Very glamorous.</small></p>
+      </div>
+    </div>
+
     <div class="reveal">
       <div class="slides">
         <section data-background-gradient="linear-gradient(135deg, #0f172a, #312e81, #7c2d12)">
@@ -23,7 +37,7 @@
           <ul>
             <li class="fragment">Step-by-step bullet reveal</li>
             <li class="fragment">Good for pacing a talk</li>
-            <li class="fragment">Zero backend, just static files</li>
+            <li class="fragment">Remote control now works through Ably</li>
           </ul>
         </section>
 
@@ -40,13 +54,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
-    <script>
-      Reveal.initialize({
-        hash: true,
-        slideNumber: true,
-        transition: 'slide',
-        backgroundTransition: 'fade'
-      });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+    <script src="https://cdn.ably.com/lib/ably.min-2.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>
