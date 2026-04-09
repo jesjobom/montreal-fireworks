@@ -44,15 +44,21 @@ function initializePresentation() {
   document.getElementById('remote-link').href = remoteUrl;
   document.getElementById('remote-link').textContent = remoteUrl;
 
-  QRCode.toCanvas(remoteUrl, { width: 200, margin: 1 }, (error, canvas) => {
-    const container = document.getElementById('remote-qr');
-    if (!container) return;
-    if (error) {
-      container.textContent = 'QR generation failed';
-      return;
+  const qrContainer = document.getElementById('remote-qr');
+  if (qrContainer) {
+    qrContainer.replaceChildren();
+    try {
+      new QRCode(qrContainer, {
+        text: remoteUrl,
+        width: 200,
+        height: 200,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    } catch (error) {
+      qrContainer.textContent = 'QR generation failed';
+      console.error(error);
     }
-    container.replaceChildren(canvas);
-  });
+  }
 
   const client = new Ably.Realtime({ token: PRESENTATION_TOKEN });
   const channel = client.channels.get(`${CHANNEL_PREFIX}${sessionId}`);

@@ -10,6 +10,7 @@ GitHub Pages URL: https://jesjobom.github.io/montreal-fireworks/
 - `remote.html` - mobile remote control
 - `app.js` - Reveal.js and Ably integration
 - `styles.css`
+- `vendor/qrcode.min.js`
 - `.nojekyll`
 
 No backend, no build step, no compilation required.
