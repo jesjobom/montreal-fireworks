@@ -506,12 +506,12 @@ input {
   line-height: 1.35;
 }
 
-.callout-1 { left: 46.5%; top: 14.5%; }
-.callout-2 { left: 31.2%; top: 8.5%; }
-.callout-3 { left: 33.4%; top: 18.5%; }
-.callout-4 { left: 23.8%; top: 49.5%; }
-.callout-5 { left: 63.6%; top: 10.5%; }
-.callout-6 { left: 39.6%; top: 1.8%; }
+.callout-1 { left: 46.5%; top: 23.5%; }
+.callout-2 { left: 31.2%; top: 16.2%; }
+.callout-3 { left: 33.4%; top: 27.3%; }
+.callout-4 { left: 23.8%; top: 58.2%; }
+.callout-5 { left: 63.6%; top: 18.7%; }
+.callout-6 { left: 39.6%; top: 10.2%; }
 
 @media (max-width: 640px) {
   .hero-slide,
