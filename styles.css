@@ -80,6 +80,39 @@ body {
   max-width: min(96vw, 1100px);
 }
 
+.info-panel {
+  max-width: min(92vw, 980px);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.info-card {
+  padding: 1rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  text-align: left;
+}
+
+.info-icon {
+  font-size: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+.info-card h3 {
+  margin: 0 0 0.45rem;
+  font-size: clamp(1.05rem, 2vw, 1.55rem);
+}
+
+.info-card p {
+  margin: 0;
+  line-height: 1.35;
+}
+
 .medal-table {
   width: 100%;
   border-collapse: collapse;
@@ -551,5 +584,9 @@ input {
   .map-callout {
     max-width: 42%;
     padding: 0.55rem 0.65rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
   }
 }
