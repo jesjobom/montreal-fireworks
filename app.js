@@ -52,13 +52,13 @@ function setOverlayCollapsed(collapsed) {
 
 function publishCommand(channel, payload, feedbackElement, eventName = 'command') {
   if (!channel) {
-    if (feedbackElement) feedbackElement.textContent = 'Remote channel is unavailable.';
+    if (feedbackElement) feedbackElement.textContent = 'Canal indisponible.';
     return;
   }
 
   channel.publish(eventName, payload, (error) => {
     if (!feedbackElement) return;
-    feedbackElement.textContent = error ? `Send failed: ${error.message || error}` : `Sent: ${payload.action}`;
+    feedbackElement.textContent = error ? `Échec d’envoi : ${error.message || error}` : `Envoyé : ${payload.action}`;
   });
 }
 
@@ -108,7 +108,7 @@ function initializePresentation() {
     }
   }
 
-  updateStatus('token expired, waiting for fresh test tokens', 'error');
+  updateStatus('Jeton expiré ou connexion Ably échouée', 'error');
 
   if (!PRESENTATION_TOKEN) {
     return;
@@ -117,18 +117,18 @@ function initializePresentation() {
   const client = new Ably.Realtime({ token: PRESENTATION_TOKEN });
   const channel = client.channels.get(`${CHANNEL_PREFIX}${sessionId}`);
 
-  client.connection.on('connected', () => updateStatus('connected', 'ok'));
-  client.connection.on('connecting', () => updateStatus('connecting...', 'pending'));
-  client.connection.on('disconnected', () => updateStatus('disconnected', 'warn'));
-  client.connection.on('suspended', () => updateStatus('suspended', 'warn'));
-  client.connection.on('failed', () => updateStatus('failed or token expired', 'error'));
+  client.connection.on('connected', () => updateStatus('connecté', 'ok'));
+  client.connection.on('connecting', () => updateStatus('connexion...', 'pending'));
+  client.connection.on('disconnected', () => updateStatus('déconnecté', 'warn'));
+  client.connection.on('suspended', () => updateStatus('connexion suspendue', 'warn'));
+  client.connection.on('failed', () => updateStatus('Jeton expiré ou connexion Ably échouée', 'error'));
 
   channel.subscribe('presence', (message) => {
     const data = (message && message.data) || {};
 
     if (data.action === 'remote-connected') {
       setOverlayCollapsed(true);
-      showToast('Remote connected');
+      showToast('Télécommande connectée');
     }
   });
 
@@ -144,7 +144,7 @@ function initializePresentation() {
         break;
       case 'goto':
         if (typeof data.h === 'number') {
-          deck.slide(data.h, typeof data.v === 'number' ? data.v : 0);
+          deck.slide(data.h, 0);
         }
         break;
       default:
@@ -157,18 +157,17 @@ function initializeRemote() {
   const sessionId = new URL(window.location.href).searchParams.get('session');
   const feedback = document.getElementById('remote-feedback');
   const sessionEl = document.getElementById('remote-session-id');
-  const gotoH = document.getElementById('goto-h');
-  const gotoV = document.getElementById('goto-v');
+  const gotoSlide = document.getElementById('goto-slide');
 
   if (!sessionId) {
-    if (feedback) feedback.textContent = 'Missing session id in URL';
+    if (feedback) feedback.textContent = 'Session manquante dans l’URL.';
     return;
   }
 
   if (sessionEl) sessionEl.textContent = sessionId;
 
   if (!REMOTE_TOKEN) {
-    if (feedback) feedback.textContent = 'Remote token missing or expired.';
+    if (feedback) feedback.textContent = 'Jeton manquant ou expiré.';
     return;
   }
 
@@ -179,15 +178,15 @@ function initializeRemote() {
     channel = client.channels.get(`${CHANNEL_PREFIX}${sessionId}`);
 
     client.connection.on('connected', () => {
-      if (feedback) feedback.textContent = 'Connected. Ready to send commands.';
+      if (feedback) feedback.textContent = 'Connectée. Prête à envoyer des commandes.';
       publishCommand(channel, { action: 'remote-connected', connectedAt: new Date().toISOString() }, null, 'presence');
     });
 
     client.connection.on('failed', () => {
-      if (feedback) feedback.textContent = 'Connection failed or token expired.';
+      if (feedback) feedback.textContent = 'Connexion échouée ou jeton expiré.';
     });
   } catch (error) {
-    if (feedback) feedback.textContent = 'Ably initialization failed.';
+    if (feedback) feedback.textContent = 'Initialisation Ably échouée.';
     console.error(error);
     return;
   }
@@ -201,15 +200,14 @@ function initializeRemote() {
   });
 
   document.getElementById('btn-goto')?.addEventListener('click', () => {
-    const h = Number.parseInt(gotoH.value, 10);
-    const v = Number.parseInt(gotoV.value || '0', 10);
+    const slideNumber = Number.parseInt(gotoSlide.value, 10);
 
-    if (Number.isNaN(h)) {
-      if (feedback) feedback.textContent = 'Horizontal slide index is required.';
+    if (Number.isNaN(slideNumber) || slideNumber < 1) {
+      if (feedback) feedback.textContent = 'Entrez un numéro de slide valide.';
       return;
     }
 
-    publishCommand(channel, { action: 'goto', h, v: Number.isNaN(v) ? 0 : v }, feedback);
+    publishCommand(channel, { action: 'goto', h: slideNumber - 1 }, feedback);
   });
 }
 

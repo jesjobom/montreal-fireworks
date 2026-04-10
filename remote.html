@@ -9,25 +9,21 @@
   <body class="remote-page">
     <main class="remote-layout">
       <div class="remote-panel">
-        <p class="eyebrow">Remote control</p>
-        <h1>Montreal Fireworks</h1>
-        <p>Session: <code id="remote-session-id">...</code></p>
-        <div class="remote-actions">
-          <button id="btn-prev" class="remote-button secondary">Previous</button>
-          <button id="btn-next" class="remote-button primary">Next</button>
+        <p class="eyebrow">Télécommande</p>
+        <h1>L’International des Feux</h1>
+        <p>Session : <code id="remote-session-id">...</code></p>
+        <div class="remote-actions remote-actions-stacked">
+          <button id="btn-next" class="remote-button primary remote-button-next">Slide suivante</button>
+          <button id="btn-prev" class="remote-button secondary">Slide précédente</button>
         </div>
-        <div class="goto-panel">
+        <div class="goto-panel-simple">
           <label>
-            H
-            <input id="goto-h" type="number" min="0" placeholder="0" />
+            Numéro du slide
+            <input id="goto-slide" type="number" min="1" placeholder="1" inputmode="numeric" />
           </label>
-          <label>
-            V
-            <input id="goto-v" type="number" min="0" placeholder="0" />
-          </label>
-          <button id="btn-goto" class="remote-button tertiary">Go to slide</button>
+          <button id="btn-goto" class="remote-button tertiary">Aller au slide</button>
         </div>
-        <p id="remote-feedback" class="remote-feedback">Connecting...</p>
+        <p id="remote-feedback" class="remote-feedback">Connexion...</p>
       </div>
     </main>
 
