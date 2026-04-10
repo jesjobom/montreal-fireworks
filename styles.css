@@ -468,6 +468,7 @@ input {
 .pin-3 { left: 33.4%; top: 42.2%; }
 .pin-4 { left: 23.8%; top: 72.1%; }
 .pin-5 { left: 63.6%; top: 33.2%; }
+.pin-6 { left: 39.6%; top: 23.8%; }
 
 .map-callout {
   position: absolute;
@@ -496,6 +497,7 @@ input {
 .callout-3 { left: 11%; top: 43.5%; }
 .callout-4 { left: 9%; top: 73%; }
 .callout-5 { left: 71%; top: 12%; }
+.callout-6 { left: 35.5%; top: 5.5%; }
 
 @media (max-width: 640px) {
   .hero-slide,
