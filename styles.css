@@ -105,13 +105,21 @@ body {
 .country-cell {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.country-cell span {
+  display: inline-block;
+  line-height: 1.1;
 }
 
 .flag-icon {
-  width: 1.6em;
+  width: 0.48em;
+  min-width: 0.48em;
   height: auto;
-  border-radius: 2px;
+  vertical-align: middle;
+  border-radius: 1px;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
   flex: 0 0 auto;
 }
