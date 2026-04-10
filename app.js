@@ -62,6 +62,21 @@ function publishCommand(channel, payload, feedbackElement, eventName = 'command'
   });
 }
 
+function syncMapPinsToFragments(deck) {
+  const pins = Array.from(document.querySelectorAll('.map-pin'));
+  const callouts = Array.from(document.querySelectorAll('.map-callout.fragment'));
+  if (!pins.length || !callouts.length) return;
+
+  const currentFragment = deck.getCurrentSlide()?.querySelector('.map-callout.fragment.current-fragment');
+  const activeIndex = currentFragment ? Number.parseInt(currentFragment.dataset.fragmentIndex || '-1', 10) : -1;
+
+  pins.forEach((pin, index) => {
+    pin.classList.toggle('is-active', index === activeIndex);
+    pin.classList.toggle('is-muted', activeIndex !== -1 && index !== activeIndex);
+    pin.classList.toggle('is-overview', activeIndex === -1);
+  });
+}
+
 function initializePresentation() {
   const deck = new Reveal({
     hash: true,
@@ -109,6 +124,12 @@ function initializePresentation() {
   }
 
   updateStatus('Jeton expiré ou connexion Ably échouée', 'error');
+
+  syncMapPinsToFragments(deck);
+  deck.on('fragmentshown', () => syncMapPinsToFragments(deck));
+  deck.on('fragmenthidden', () => syncMapPinsToFragments(deck));
+  deck.on('slidechanged', () => syncMapPinsToFragments(deck));
+  deck.on('ready', () => syncMapPinsToFragments(deck));
 
   if (!PRESENTATION_TOKEN) {
     return;
