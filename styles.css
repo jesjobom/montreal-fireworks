@@ -423,6 +423,72 @@ input {
   }
 }
 
+.map-slide-shell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.map-frame {
+  position: relative;
+  width: min(96vw, 1200px);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.map-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.map-pin {
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 999px;
+  background: #ef4444;
+  border: 3px solid white;
+  box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.22);
+  transform: translate(-50%, -50%);
+}
+
+.pin-1 { left: 49.4%; top: 32.8%; }
+.pin-2 { left: 34.1%; top: 27.3%; }
+.pin-3 { left: 36.2%; top: 33.9%; }
+.pin-4 { left: 26.5%; top: 67.4%; }
+.pin-5 { left: 66.7%; top: 28.1%; }
+
+.map-callout {
+  position: absolute;
+  max-width: 27%;
+  padding: 0.8rem 0.95rem;
+  border-radius: 16px;
+  background: rgba(2, 6, 23, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  text-align: left;
+}
+
+.map-callout h3 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1rem, 1.4vw, 1.4rem);
+}
+
+.map-callout p {
+  margin: 0;
+  font-size: clamp(0.8rem, 1.05vw, 1.05rem);
+  line-height: 1.35;
+}
+
+.callout-1 { left: 55%; top: 18%; }
+.callout-2 { left: 18%; top: 14%; }
+.callout-3 { left: 16%; top: 39%; }
+.callout-4 { left: 9%; top: 73%; }
+.callout-5 { left: 71%; top: 12%; }
+
 @media (max-width: 640px) {
   .hero-slide,
   .content-slide {
@@ -456,5 +522,10 @@ input {
 
   .medal-table {
     min-width: 620px;
+  }
+
+  .map-callout {
+    max-width: 42%;
+    padding: 0.55rem 0.65rem;
   }
 }
