@@ -115,8 +115,8 @@ body {
 }
 
 .flag-icon {
-  width: 0.48em;
-  min-width: 0.48em;
+  width: 1em;
+  min-width: 1em;
   height: auto;
   vertical-align: middle;
   border-radius: 1px;
