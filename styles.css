@@ -449,10 +449,18 @@ input {
   width: 1.2rem;
   height: 1.2rem;
   border-radius: 999px;
-  background: #ef4444;
-  border: 3px solid white;
-  box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.22);
+  background: #9ca3af;
+  border: 3px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 0 6px rgba(148, 163, 184, 0.18);
+  opacity: 0.72;
   transform: translate(-50%, -50%);
+}
+
+.map-pin.visible.current-fragment {
+  background: #ef4444;
+  border-color: white;
+  box-shadow: 0 0 0 6px rgba(239, 68, 68, 0.22), 0 0 24px rgba(239, 68, 68, 0.55);
+  opacity: 1;
 }
 
 .pin-1 { left: 49.4%; top: 32.8%; }
