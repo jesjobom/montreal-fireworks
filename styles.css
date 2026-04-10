@@ -492,6 +492,7 @@ input {
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
   text-align: left;
+  transform: translateX(-50%);
 }
 
 .map-callout h3 {
@@ -505,12 +506,12 @@ input {
   line-height: 1.35;
 }
 
-.callout-1 { left: 55%; top: 18%; }
-.callout-2 { left: 18%; top: 14%; }
-.callout-3 { left: 11%; top: 43.5%; }
-.callout-4 { left: 9%; top: 73%; }
-.callout-5 { left: 71%; top: 12%; }
-.callout-6 { left: 35.5%; top: 5.5%; }
+.callout-1 { left: 46.5%; top: 14.5%; }
+.callout-2 { left: 31.2%; top: 8.5%; }
+.callout-3 { left: 33.4%; top: 18.5%; }
+.callout-4 { left: 23.8%; top: 49.5%; }
+.callout-5 { left: 63.6%; top: 10.5%; }
+.callout-6 { left: 39.6%; top: 1.8%; }
 
 @media (max-width: 640px) {
   .hero-slide,
