@@ -76,6 +76,40 @@ body {
   line-height: 1.35;
 }
 
+.table-panel {
+  max-width: min(96vw, 1100px);
+}
+
+.medal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: clamp(0.9rem, 1.7vw, 1.35rem);
+  background: rgba(2, 6, 23, 0.28);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.medal-table th,
+.medal-table td {
+  padding: 0.7rem 0.8rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.medal-table th:nth-child(2),
+.medal-table td:nth-child(2) {
+  text-align: left;
+}
+
+.medal-table thead th {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.medal-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
 .reveal h1,
 .reveal h2 {
   text-transform: none;
@@ -368,12 +402,14 @@ input {
 }
 
 @media (max-width: 640px) {
-  .hero-slide {
+  .hero-slide,
+  .content-slide {
     min-height: min(70vh, 560px);
     padding: 1rem;
   }
 
-  .hero-title {
+  .hero-title,
+  .content-panel {
     max-width: calc(100vw - 3rem);
     padding: 1rem 1.1rem;
   }
@@ -390,5 +426,13 @@ input {
 
   .remote-button {
     width: 100%;
+  }
+
+  .table-panel {
+    overflow-x: auto;
+  }
+
+  .medal-table {
+    min-width: 620px;
   }
 }
