@@ -1,5 +1,5 @@
-const PRESENTATION_TOKEN = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwia2lkIjoiMGpwTEJBLlJSMUJIZyJ9..97oRlLJEDPFTjbTC.3CkAWlgarnqD-bvlKqATzN81orzWQdds-JPCiX8p2MxP7--a2CYBgNMDPpLZGX-ACqGzcG80vQzl7fuvi8BCJkDgWI1JDPDDOcxVVgzXZ8i4kh-rQCc1fxDy8gv-J8NpOcUQNaHroJY5qIy6A25gcRuy_nSnRfDPlnketgQw.WDhV6FnUeU24XXWf_Ohxbw';
-const REMOTE_TOKEN = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwia2lkIjoiMGpwTEJBLmdyNHFqQSJ9..Mpe7W2-OqrEAqwsH.4WYEnDhlNPCQjzw5UONghVLF7Tyya4kHFaRmO01vvEeYGEQhyWwofdQJtSA5TkFR2TtaCpX-Twv8Bcid5nkNVWrfe518gIY3gio9s_geFhKBWU2pEad1K5MTQMDKlrCnrUZQ6-AUCpzrBnmGsTDLzkn9_YnHPUuHwn2G7w.90M4XpMK2kAs7kWeUWRPDA';
+const PRESENTATION_TOKEN = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwia2lkIjoiMGpwTEJBLlJSMUJIZyJ9..HDdJNaNwrMutXEFv.enJBdo2EQBEPvbbJiuHfnms105lDX8tPo3NaLvQdUkLroGMWMnhI7RbdHLL9Qk0qjkpEa86HXOI-qTbKLTN-uKLZS_XgB7t76j_sspxUIjausg-HqF2ZI0LuNYmXpmwfrHXUhUojMITtSAOl1X0aHlvSRI_0Ddq_gi5fQQg9.FNSxDNtqBS9BsdugbKT8Zw';
+const REMOTE_TOKEN = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwia2lkIjoiMGpwTEJBLmdyNHFqQSJ9..mX4QXdNogMMPEb7A.NDxD3sxrKG54dwpcxFkNuHt3_JD8WMpfr_dqdViiqG9SC_97HIj6S-maUwtSB4Mc2uZrlZirs3ZzYqsGB9_5d97_2dgKNHdytrpMNg8Z-fEuiwAkwxUSh6WlfzVvlHdT2R2rGmb6qNdRi6kmfxli5I_f78id5JzJAHOalw.yiUSUxTAANm3PoobbXsV0A';
 const CHANNEL_PREFIX = 'montreal-fireworks:';
 
 function getSessionId() {
@@ -77,6 +77,129 @@ function syncMapPinsToFragments(deck) {
   });
 }
 
+function createFireworksEngine() {
+  const canvas = document.getElementById('fireworks-canvas');
+  if (!canvas) {
+    return { trigger() {} };
+  }
+
+  const context = canvas.getContext('2d');
+  if (!context) {
+    return { trigger() {} };
+  }
+
+  const bursts = [];
+  let rafId = 0;
+  let stopAt = 0;
+
+  function resize() {
+    const ratio = window.devicePixelRatio || 1;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    canvas.width = Math.round(width * ratio);
+    canvas.height = Math.round(height * ratio);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+  }
+
+  function makeBurst() {
+    const hue = Math.floor(Math.random() * 360);
+    const x = window.innerWidth * (0.18 + Math.random() * 0.64);
+    const y = window.innerHeight * (0.16 + Math.random() * 0.42);
+    const count = 22 + Math.floor(Math.random() * 18);
+    const particles = [];
+
+    for (let index = 0; index < count; index += 1) {
+      const angle = (Math.PI * 2 * index) / count + (Math.random() - 0.5) * 0.18;
+      const speed = 1.8 + Math.random() * 4.4;
+      particles.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 0,
+        ttl: 42 + Math.random() * 26,
+        radius: 1.8 + Math.random() * 2.8,
+        alpha: 1,
+        color: `hsla(${(hue + Math.random() * 40 - 20 + 360) % 360}, 100%, ${60 + Math.random() * 20}%, 1)`
+      });
+    }
+
+    bursts.push({ particles });
+  }
+
+  function animate() {
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    for (let burstIndex = bursts.length - 1; burstIndex >= 0; burstIndex -= 1) {
+      const burst = bursts[burstIndex];
+
+      for (let particleIndex = burst.particles.length - 1; particleIndex >= 0; particleIndex -= 1) {
+        const particle = burst.particles[particleIndex];
+        particle.life += 1;
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.vx *= 0.988;
+        particle.vy = particle.vy * 0.988 + 0.045;
+        particle.alpha = Math.max(0, 1 - particle.life / particle.ttl);
+
+        if (particle.alpha <= 0.02) {
+          burst.particles.splice(particleIndex, 1);
+          continue;
+        }
+
+        context.beginPath();
+        context.fillStyle = particle.color.replace(', 1)', `, ${particle.alpha})`);
+        context.shadowColor = particle.color.replace(', 1)', `, ${Math.min(1, particle.alpha)})`);
+        context.shadowBlur = 12;
+        context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        context.fill();
+      }
+
+      if (!burst.particles.length) {
+        bursts.splice(burstIndex, 1);
+      }
+    }
+
+    context.shadowBlur = 0;
+
+    if (Date.now() < stopAt) {
+      if (Math.random() < 0.17) {
+        makeBurst();
+      }
+    }
+
+    if (bursts.length || Date.now() < stopAt) {
+      rafId = window.requestAnimationFrame(animate);
+      return;
+    }
+
+    canvas.classList.remove('is-active');
+    rafId = 0;
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+
+  return {
+    trigger(durationMs = 1800) {
+      resize();
+      stopAt = Date.now() + durationMs;
+      canvas.classList.add('is-active');
+
+      makeBurst();
+      window.setTimeout(makeBurst, 180);
+      window.setTimeout(makeBurst, 360);
+
+      if (!rafId) {
+        rafId = window.requestAnimationFrame(animate);
+      }
+    }
+  };
+}
+
 function initializePresentation() {
   const deck = new Reveal({
     hash: true,
@@ -87,6 +210,7 @@ function initializePresentation() {
 
   deck.initialize();
 
+  const fireworks = createFireworksEngine();
   const sessionId = getSessionId();
   const remoteUrl = getRemoteUrl(sessionId);
   document.getElementById('session-id').textContent = sessionId;
@@ -168,6 +292,10 @@ function initializePresentation() {
           deck.slide(data.h, 0);
         }
         break;
+      case 'fireworks':
+        fireworks.trigger();
+        showToast('Feux déclenchés');
+        break;
       default:
         console.warn('Unknown remote action', data);
     }
@@ -218,6 +346,10 @@ function initializeRemote() {
 
   document.getElementById('btn-prev')?.addEventListener('click', () => {
     publishCommand(channel, { action: 'prev' }, feedback);
+  });
+
+  document.getElementById('btn-fireworks')?.addEventListener('click', () => {
+    publishCommand(channel, { action: 'fireworks' }, feedback);
   });
 
   document.getElementById('btn-goto')?.addEventListener('click', () => {
