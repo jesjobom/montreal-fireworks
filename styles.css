@@ -302,6 +302,21 @@ small {
   transition: opacity 180ms ease, transform 180ms ease;
 }
 
+.fireworks-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 24;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.fireworks-canvas.is-active {
+  opacity: 1;
+}
+
 .toast.is-visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
@@ -432,6 +447,11 @@ input {
 .remote-button.secondary,
 .remote-button.tertiary {
   background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.remote-button.fireworks {
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
   color: white;
 }
 
