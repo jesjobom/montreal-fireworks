@@ -4,6 +4,12 @@ Static Reveal.js presentation prepared for GitHub Pages.
 
 GitHub Pages URL: https://jesjobom.github.io/montreal-fireworks/
 
+## Why this project exists
+
+This project was created as a test, specifically as a first experiment in using OpenClaw for coding through instructions sent over Telegram.
+
+The goal was to validate a lightweight workflow where a project could be created and evolved through conversational guidance, while OpenClaw handled the implementation work.
+
 ## Files
 
 - `index.html` - presentation
